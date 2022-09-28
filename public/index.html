@@ -1,51 +1,43 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>تسجيل الدخول</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="header.css">
-    <link rel="stylesheet" href="style.css">
+    <title>Taqeem | تقييم</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="./css/bootstrap.min.css" rel="stylesheet">
 </head>
-<body>
 
-<!-- Header -->
+<body class="bg-light">
+
 <header>
-    <!-- Navbar -->
-    <nav class="navbar">
-        <div class="container flex">
-                <img src="../images/large.png">
-            <nav>
-                <ul>
-                    <li><a href="#">الاختيار 1</a></li>
-                    <li><a href="#">الاختيار 2</a></li>
-                    <li><a href="#">الاختيار 3</a></li>
-                </ul>
-            </nav>
-        </div>
-    </nav>
+    <div class="py-5 text-center">
+        <img class="d-block mx-auto mb-4" src="./images/logo.png" alt="">
+    </div>
 </header>
 
-<!-- Content-->
 <main>
-    <div class="container fill-remaining-space">
-        <form id="login_form">
-            <h2 class="title">تسجيل الدخول</h2>
-            <input type="text" id="username" placeholder="اسم المستخدم" name="username" required>
-            <input type="password" id="password" placeholder="كلمة المرور" name="password" required>
-            <input class="btn" type="submit" value="Login">
-        </form>
+    <div class="container" style="max-width: 500px">
+        <div class="text-center">
+            <h2 class="m-5">تسجيل الدخول</h2>
+            <form id="login_form">
+                <div class="mb-3">
+                    <div class="input-group">
+                        <input type="text" class="form-control" id="username" placeholder="Username" required>
+                    </div>
+                    <br class="mb-4">
+                    <input type="password" class="form-control" id="password" placeholder="Password" required>
+                </div>
+                <br class="mb-4">
+                <hr class="mb-4">
+                <button class="btn btn-primary btn-lg btn-block" type="submit">Login</button>
+            </form>
+        </div>
     </div>
 </main>
 
-<!-- Footer -->
-<footer>
-    <div>
-        <h1 class="text">تقييم</h1>
-        <p class="text">
-            Copyright &copy; 2022
-        </p>
-    </div>
+<footer class="my-5 pt-5 text-muted text-center text-small">
+    <h2>Taqeem | تقييم</h2>
+    <p class="mb-1">&copy; 2022 Copy Rights</p>
 </footer>
 
 <script type="module" src=js/login.js></script>
