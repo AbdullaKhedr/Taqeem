@@ -30,17 +30,3 @@ async function login(event) {
         alert("Login Failed");
     }
 }
-
-
-function showLogin() {
-    return `
-    <div class="container fill-remaining-space">
-            <form id="login_form">
-                <h2 class="title">تسجيل الدخول</h2>
-                <input type="text" id="username" placeholder="اسم المستخدم" name="username" required>
-                <input type="password" id="password" placeholder="كلمة المرور" name="password" required>
-                <input class="btn" type="submit" value="Login">
-            </form>
-        </div>
-    `
-}

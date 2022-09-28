@@ -10,7 +10,7 @@ class TeamsRepo {
     }
 
     async getTeams(userName) {
-        let url = `/api/leader?=${userName}`;
+        let url = `/api/teams?leader=${userName}`;
         const response = await fetch(url);
         return await response.json();
     }

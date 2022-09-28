@@ -13,6 +13,10 @@ class TeamsRepo {
         return Team.find({_id: id});
     }
 
+    async getTeamsByLeader(leader) {
+        return Team.find({leader: leader});
+    }
+
     async getAllTeams() {
         return Team.find({});
     }
