@@ -16,9 +16,9 @@ const team_card = document.querySelector('.team_card');
 async function getTeams() {
     const teams = await teamsRepo.getTeams(authRepo.getCurrentUser());
 
-    console.log(teams);
-
-    content.innerHTML = `
+    console.log(...teams);
+    teams.map((item) => {
+        content.innerHTML = `
     <div class="container">
             <div class="team_card">
                 <div>
@@ -29,6 +29,7 @@ async function getTeams() {
             </div>
         </div>
     `
+    })
 
 }
 

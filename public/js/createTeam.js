@@ -4,7 +4,6 @@ import authRepo from '../repository/AuthRepo.js';
 document.addEventListener("DOMContentLoaded", async () => {
     window.addGroup = addGroup
     window.removeGroup = removeGroup
-    window.addGroupListItem = addGroupListItem
 });
 let groupsCounter = 1;
 const team_name = document.querySelector('#team_name');
@@ -19,50 +18,59 @@ async function createTeam(event) {
     // Prevent default action of the submit button
     event.preventDefault();
 
-    const team = formToObject(createTeamForm);
-    alert(JSON.stringify(team))
-    await teamRepo.addTeam({
-        name: team_name,
+    const Team = {
+        name: team_name.value,
         leader: authRepo.getCurrentUser(),
-        groups: [{
-            name: "",
-            members: []
-        }]
-    });
-    createTeamForm.action = `/api/teams/`;
+        picture: "",
+        score: 0,
+        groups: groups_list_holder.map((e) => {
+            return {
+                name: e,
+                members: []
+            }
+        })
+
+    }
+    console.log(JSON.stringify(Team));
+    alert(JSON.stringify(Team))
+    await teamRepo.addTeam(Team);
     history.back();
 }
 
 function addGroup() {
-    const name = `group${groupsCounter}`;
-    group_list.innerHTML +=
-        `<div class="input-group" id="${name}">
-                    <div class="input-group-append">
-                    <button class="btn btn-danger btn-sm rounded-2" 
-                     type="button" 
-                     data-toggle="tooltip"
-                     data-placement="top" title="" data-original-title="Delete"
-                     onclick="removeGroup('${name}')"
-                     >
-                         <i class="fa fa-trash"></i>
-                     </button>
-                    </div>
-                    <input
-                    name="${name}"
-                    type="text"
-                            class="form-control"
-                            id="team_name"
-                            placeholder="اسم الجموعة"
-                            required
-                    >
-                </div>
-                <br class="mb-1">
-`
-    groupsCounter++;
+    const group_name = document.querySelector('#group_name');
+    groups_list_holder.push(group_name.value);
+    renderGroupsList();
+    group_name.value = ""
 }
 
 function removeGroup(id) {
-    document.querySelector(`#${id}`).remove();
+    delete groups_list_holder[id];
+    renderGroupsList();
+}
+
+function renderGroupsList() {
+    group_list.innerHTML = "";
+    groups_list_holder.map((element, index) => {
+        group_list.innerHTML +=
+            `<div class="" id="group${index}">
+                    <div class="card">
+                    <div class="input-group-append">
+                    <button class="btn btn-danger btn-sm rounded-2" 
+                    type="button" 
+                    data-toggle="tooltip"
+                    data-placement="top" title="" data-original-title="Delete"
+                    onclick="removeGroup('${index}')">
+                    <i class="fa fa-trash"></i>
+                    </button>
+                    <h3 class="w-100" dir="rtl">
+                    ${element}
+                    </h3>
+                    </div>
+                    </div>
+                <br class="mb-1">
+                </div>`
+    })
 }
 
 function formToObject(formElement) {

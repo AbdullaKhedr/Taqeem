@@ -10,7 +10,8 @@ const Team = mongoose.model('Team', new mongoose.Schema({
         members: [{
             name: {type: String, required: [true, 'Member name cannot be empty']},
             score: {type: Number, min: 0}
-        }]
+        }],
+        score: {type: Number, min: 0}
     }]
 }));
 
