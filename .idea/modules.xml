@@ -3,7 +3,6 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/taqeem.iml" filepath="$PROJECT_DIR$/taqeem.iml" />
-      <module fileurl="file://$PROJECT_DIR$/android/taqeem_android.iml" filepath="$PROJECT_DIR$/android/taqeem_android.iml" />
     </modules>
   </component>
 </project>
