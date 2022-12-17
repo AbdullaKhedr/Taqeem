@@ -36,6 +36,23 @@ class LoginPage extends StatelessWidget {
       appBar: AppBar(
         title: const Text("Taqeem"),
       ),
+      body: Center(
+        child: Column(
+          children: const [
+            Text(
+              "Welcome",
+              style: TextStyle(
+                  color: Colors.blueAccent,
+                  fontSize: 40,
+                  fontWeight: FontWeight.bold),
+            ),
+            SizedBox(
+              height: 20.0,
+            ),
+            Text("Welcome"),
+          ],
+        ),
+      ),
     );
   }
 }
