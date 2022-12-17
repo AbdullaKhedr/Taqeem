@@ -33,9 +33,6 @@ class LoginPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Taqeem"),
-      ),
       body: Center(
         child: Column(
           children: const [
@@ -46,10 +43,8 @@ class LoginPage extends StatelessWidget {
                   fontSize: 40,
                   fontWeight: FontWeight.bold),
             ),
-            SizedBox(
-              height: 20.0,
-            ),
             Text("Welcome"),
+            SizedBox(height: 20.0),
           ],
         ),
       ),
