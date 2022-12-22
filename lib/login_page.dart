@@ -1,35 +1,24 @@
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:taqeem/home_page.dart';
 
-Future<void> main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(
-      options: const FirebaseOptions(
-          apiKey: "AIzaSyDokQpb2UDMHnB-XDhKnYXjRJMgvPHH49k",
-          appId: "1:264089181284:web:dae0b8071605d378069371",
-          messagingSenderId: "264089181284",
-          projectId: "taqeem-bcdb2"));
-  runApp(const MyApp());
-}
+import 'home_page.dart';
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class LoginPage extends StatefulWidget {
+  const LoginPage({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: const LoginPage(),
-    );
-  }
+  State<LoginPage> createState() => _LoginPageState();
 }
 
-class LoginPage extends StatelessWidget {
-  const LoginPage({super.key});
+class _LoginPageState extends State<LoginPage> {
+  final emailController = TextEditingController();
+  final passweordController = TextEditingController();
+
+  @override
+  void dispose() {
+    emailController.dispose();
+    passweordController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -40,6 +29,9 @@ class LoginPage extends StatelessWidget {
           children: [
             const Image(
               image: AssetImage('assets/images/logo.png'),
+            ),
+            TextField(
+              controller: emailController,
             ),
             const SizedBox(height: 50.0),
             const Text(
