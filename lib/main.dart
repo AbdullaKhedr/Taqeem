@@ -1,6 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:taqeem/home_page.dart';
+import 'package:taqeem/login_page.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -23,49 +23,16 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const LoginPage(),
+      home: const MainPage(),
     );
   }
 }
 
-class LoginPage extends StatelessWidget {
-  const LoginPage({super.key});
+class MainPage extends StatelessWidget {
+  const MainPage({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Image(
-              image: AssetImage('assets/images/logo.png'),
-            ),
-            const SizedBox(height: 50.0),
-            const Text(
-              "Login",
-              style: TextStyle(
-                  color: Colors.blueAccent,
-                  fontSize: 40,
-                  fontWeight: FontWeight.bold),
-            ),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.of(context).pushReplacement(
-                  MaterialPageRoute(
-                    builder: (BuildContext context) {
-                      return const HomePage();
-                    },
-                  ),
-                );
-              },
-              style:
-                  ElevatedButton.styleFrom(backgroundColor: Colors.blueAccent),
-              child: const Text("Login"),
-            )
-          ],
-        ),
-      ),
-    );
-  }
+  Widget build(BuildContext context) => const Scaffold(
+        body: LoginPage(),
+      );
 }
