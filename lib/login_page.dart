@@ -1,6 +1,7 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-import 'home_page.dart';
+import 'alert_dialog.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -11,51 +12,74 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   final emailController = TextEditingController();
-  final passweordController = TextEditingController();
+  final passwordController = TextEditingController();
 
   @override
   void dispose() {
     emailController.dispose();
-    passweordController.dispose();
+    passwordController.dispose();
     super.dispose();
+  }
+
+  Future signIn() async {
+    try {
+      await FirebaseAuth.instance.signInWithEmailAndPassword(
+          email: emailController.text.trim(),
+          password: passwordController.text.trim());
+    } catch (e) {
+      showAlertDialog(context, 'Error', e.toString());
+      Dialog(
+        child: Text(e.toString()),
+      );
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Image(
-              image: AssetImage('assets/images/logo.png'),
-            ),
-            TextField(
-              controller: emailController,
-            ),
-            const SizedBox(height: 50.0),
-            const Text(
-              "Login",
-              style: TextStyle(
-                  color: Colors.blueAccent,
-                  fontSize: 40,
-                  fontWeight: FontWeight.bold),
-            ),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.of(context).pushReplacement(
-                  MaterialPageRoute(
-                    builder: (BuildContext context) {
-                      return const HomePage();
-                    },
+        child: Container(
+          constraints: const BoxConstraints(maxWidth: 300),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Image(
+                image: AssetImage('assets/images/logo.png'),
+              ),
+              const SizedBox(height: 30.0),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: TextField(
+                  controller: emailController,
+                  textInputAction: TextInputAction.next,
+                  keyboardType: TextInputType.emailAddress,
+                  decoration: const InputDecoration(labelText: 'Email'),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: TextField(
+                  controller: passwordController,
+                  textInputAction: TextInputAction.done,
+                  obscureText: true,
+                  decoration: const InputDecoration(labelText: 'Password'),
+                ),
+              ),
+              const SizedBox(height: 50.0),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    minimumSize: const Size.fromHeight(40),
                   ),
-                );
-              },
-              style:
-                  ElevatedButton.styleFrom(backgroundColor: Colors.blueAccent),
-              child: const Text("Login"),
-            )
-          ],
+                  onPressed: () {
+                    signIn();
+                  },
+                  child: const Text("Login"),
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );
