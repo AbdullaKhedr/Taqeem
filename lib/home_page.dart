@@ -1,5 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'dart:io';
+
+import 'package:file_picker/file_picker.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -84,12 +89,44 @@ class FisrtScreen extends StatelessWidget {
   }
 }
 
-class SecondScreen extends StatelessWidget {
+class SecondScreen extends StatefulWidget {
   const SecondScreen({super.key});
 
   @override
+  State<SecondScreen> createState() => _SecondScreenState();
+}
+
+class _SecondScreenState extends State<SecondScreen> {
+  var _dropdownValue = "";
+
+  dropdownCallback(value) {
+    setState(() {
+      _dropdownValue = value;
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return Container();
+    return Center(
+      child: Column(
+        children: [
+          DropdownButton(
+            value: _dropdownValue,
+            items: const [
+              DropdownMenuItem(
+                value: "data",
+                child: Text("data"),
+              ),
+            ],
+            onChanged: dropdownCallback,
+          ),
+          ElevatedButton(
+            onPressed: () {},
+            child: const Text("Import from excel file"),
+          )
+        ],
+      ),
+    );
   }
 }
 

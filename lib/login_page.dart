@@ -40,8 +40,8 @@ class _LoginPageState extends State<LoginPage> {
       body: Center(
         child: Container(
           constraints: const BoxConstraints(maxWidth: 300),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
+          child: ListView(
+            shrinkWrap: true,
             children: [
               const Image(
                 image: AssetImage('assets/images/logo.png'),
@@ -65,7 +65,7 @@ class _LoginPageState extends State<LoginPage> {
                   decoration: const InputDecoration(labelText: 'Password'),
                 ),
               ),
-              const SizedBox(height: 50.0),
+              const SizedBox(height: 30.0),
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: ElevatedButton(
