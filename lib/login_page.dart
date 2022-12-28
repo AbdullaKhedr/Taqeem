@@ -39,6 +39,10 @@ class _LoginPageState extends State<LoginPage> {
     return Scaffold(
       body: Center(
         child: Container(
+          decoration: BoxDecoration(
+            border: Border.all(width: 1),
+            borderRadius: BorderRadius.circular(12),
+          ),
           constraints: const BoxConstraints(maxWidth: 300),
           child: ListView(
             shrinkWrap: true,
@@ -53,7 +57,10 @@ class _LoginPageState extends State<LoginPage> {
                   controller: emailController,
                   textInputAction: TextInputAction.next,
                   keyboardType: TextInputType.emailAddress,
-                  decoration: const InputDecoration(labelText: 'Email'),
+                  decoration: const InputDecoration(
+                    labelText: 'Email',
+                    border: OutlineInputBorder(),
+                  ),
                 ),
               ),
               Padding(
@@ -62,7 +69,10 @@ class _LoginPageState extends State<LoginPage> {
                   controller: passwordController,
                   textInputAction: TextInputAction.done,
                   obscureText: true,
-                  decoration: const InputDecoration(labelText: 'Password'),
+                  decoration: const InputDecoration(
+                    labelText: 'Password',
+                    border: OutlineInputBorder(),
+                  ),
                 ),
               ),
               const SizedBox(height: 30.0),

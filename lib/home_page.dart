@@ -1,10 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'dart:io';
 
-import 'package:file_picker/file_picker.dart';
-import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
+import 'package:taqeem/model/group.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -16,7 +14,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   int _currentIndex = 0;
   List<Widget> screenBody = const [
-    FisrtScreen(),
+    FirstScreen(),
     SecondScreen(),
     ThirdScreen()
   ];
@@ -48,42 +46,93 @@ class _HomePageState extends State<HomePage> {
           },
           items: const [
             BottomNavigationBarItem(
-              label: "Home",
-              icon: Icon(Icons.home),
+              label: "Groups",
+              icon: Icon(Icons.group),
             ),
             BottomNavigationBarItem(
-              label: "Home",
-              icon: Icon(Icons.home),
+              label: "Students",
+              icon: Icon(Icons.person),
             ),
             BottomNavigationBarItem(
-              label: "Home",
-              icon: Icon(Icons.home),
+              label: "Rubrics",
+              icon: Icon(Icons.grading),
             ),
           ]),
     );
   }
 }
 
-class FisrtScreen extends StatelessWidget {
-  const FisrtScreen({super.key});
+class FirstScreen extends StatefulWidget {
+  const FirstScreen({super.key});
+
+  @override
+  State<FirstScreen> createState() => _FirstScreenState();
+}
+
+class _FirstScreenState extends State<FirstScreen> {
+  final groupNameController = TextEditingController();
+  final passwordController = TextEditingController();
+  final formKey = GlobalKey<FormState>();
+
+  @override
+  void dispose() {
+    groupNameController.dispose();
+    passwordController.dispose();
+    super.dispose();
+  }
+
+  Future createGroup(Group group) async {
+    final groupsCollection = FirebaseFirestore.instance.collection("groups");
+    groupsCollection.add(group.toMap());
+  }
 
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: Column(
-        children: [
-          Card(
-            elevation: 20,
-            child: Padding(
-              padding: const EdgeInsets.all(12.0),
-              child: Column(
-                children: [
-                  const Text("First Team"),
-                ],
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 20),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Form(
+                key: formKey,
+                child: Column(
+                  children: [
+                    TextFormField(
+                      controller: groupNameController,
+                      textInputAction: TextInputAction.next,
+                      decoration: const InputDecoration(
+                        labelText: 'Group Name',
+                        border: OutlineInputBorder(),
+                      ),
+                    ),
+                    const SizedBox(height: 30),
+                    ElevatedButton(
+                      onPressed: () {
+                        var uid = FirebaseAuth.instance.currentUser!.uid;
+                        final group = Group(
+                            groupNameController.text.trim(), 0, [], [uid]);
+                        createGroup(group);
+                      },
+                      child: const Text("Create Group"),
+                    ),
+                  ],
+                )),
+            Card(
+              elevation: 20,
+              child: Padding(
+                padding: const EdgeInsets.all(12.0),
+                child: Column(
+                  children: const [
+                    Text("First Team"),
+                    Text("Members Count"),
+                    Text("Score"),
+                  ],
+                ),
               ),
-            ),
-          )
-        ],
+            )
+          ],
+        ),
       ),
     );
   }
@@ -97,7 +146,7 @@ class SecondScreen extends StatefulWidget {
 }
 
 class _SecondScreenState extends State<SecondScreen> {
-  var _dropdownValue = "";
+  var _dropdownValue;
 
   dropdownCallback(value) {
     setState(() {
@@ -116,6 +165,14 @@ class _SecondScreenState extends State<SecondScreen> {
               DropdownMenuItem(
                 value: "data",
                 child: Text("data"),
+              ),
+              DropdownMenuItem(
+                value: "data1",
+                child: Text("data1"),
+              ),
+              DropdownMenuItem(
+                value: "data11",
+                child: Text("data11"),
               ),
             ],
             onChanged: dropdownCallback,
