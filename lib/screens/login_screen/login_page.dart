@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-import 'alert_dialog.dart';
+import '../../components/alert_dialog.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -37,11 +37,13 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.black26,
       body: Center(
         child: Container(
+          padding: const EdgeInsets.only(left: 20.0, right: 20.0),
           decoration: BoxDecoration(
-            border: Border.all(width: 1),
-            borderRadius: BorderRadius.circular(12),
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(8),
           ),
           constraints: const BoxConstraints(maxWidth: 300),
           child: ListView(
@@ -75,7 +77,7 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                 ),
               ),
-              const SizedBox(height: 30.0),
+              const SizedBox(height: 20.0),
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: ElevatedButton(
@@ -87,7 +89,8 @@ class _LoginPageState extends State<LoginPage> {
                   },
                   child: const Text("Login"),
                 ),
-              )
+              ),
+              const SizedBox(height: 20.0),
             ],
           ),
         ),

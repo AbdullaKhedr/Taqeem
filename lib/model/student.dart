@@ -1,11 +1,15 @@
 class Student {
-  final int id;
   final String name;
   final int score;
 
   const Student(
-    this.id,
     this.name,
     this.score,
   );
+  Map<String, dynamic> toMap() {
+    return {
+      'name': name,
+      'score': score,
+    };
+  }
 }
