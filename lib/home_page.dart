@@ -39,7 +39,6 @@ class _HomePageState extends State<HomePage> {
       ),
       body: screenBody[_currentIndex],
       bottomNavigationBar: NavigationBar(
-        height: 60,
         selectedIndex: _currentIndex,
         onDestinationSelected: (index) {
           setState(() {

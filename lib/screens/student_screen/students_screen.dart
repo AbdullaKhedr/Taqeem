@@ -23,7 +23,7 @@ class _StudentsScreenState extends State<StudentsScreen> {
           Navigator.of(context).push(
             MaterialPageRoute(
               builder: (BuildContext context) {
-                return const EditStudent();
+                return const EditStudent(student: {});
               },
             ),
           );
@@ -37,7 +37,11 @@ class _StudentsScreenState extends State<StudentsScreen> {
           }
 
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Text("Loading");
+            return Center(
+                child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: const [CircularProgressIndicator()],
+            ));
           }
 
           return ListView(
@@ -45,6 +49,7 @@ class _StudentsScreenState extends State<StudentsScreen> {
                 .map((DocumentSnapshot document) {
                   Map<String, dynamic> data =
                       document.data()! as Map<String, dynamic>;
+                  data['id'] = document.id;
                   return Card(
                       child: Column(mainAxisSize: MainAxisSize.min, children: [
                     ListTile(
@@ -53,10 +58,37 @@ class _StudentsScreenState extends State<StudentsScreen> {
                         size: 40.0,
                         color: Colors.indigo,
                       ),
-                      trailing: const Icon(
-                        Icons.more_horiz,
-                        size: 20.0,
-                        color: Colors.indigo,
+                      trailing: PopupMenuButton(
+                        itemBuilder: (BuildContext context) => [
+                          PopupMenuItem(
+                            child: const Text('Edit'),
+                            onTap: () {
+                              Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: (BuildContext context) {
+                                    return EditStudent(student: data);
+                                  },
+                                ),
+                              );
+                              Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: (BuildContext context) {
+                                    return EditStudent(student: data);
+                                  },
+                                ),
+                              );
+                            },
+                          ),
+                          PopupMenuItem(
+                            child: const Text('Delete'),
+                            onTap: () {
+                              FirebaseFirestore.instance
+                                  .collection('students')
+                                  .doc(data['id'])
+                                  .delete();
+                            },
+                          ),
+                        ],
                       ),
                       title: Text(data['name']),
                       subtitle: Text(data['score'].toString()),

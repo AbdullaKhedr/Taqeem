@@ -1,33 +1,36 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:taqeem/model/student.dart';
 
 class EditStudent extends StatefulWidget {
-  const EditStudent({super.key});
+  const EditStudent({super.key, required this.student});
+  final Map<String, dynamic> student;
 
   @override
   State<EditStudent> createState() => _EditStudentState();
 }
 
 class _EditStudentState extends State<EditStudent> {
-  final groupNameController = TextEditingController();
-  final passwordController = TextEditingController();
+  final studentNameController = TextEditingController();
 
   @override
   void dispose() {
-    groupNameController.dispose();
-    passwordController.dispose();
+    studentNameController.dispose();
     super.dispose();
   }
 
-  Future updateStudent(Student student) async {
+  Future updateStudent(Map<String, dynamic> student) async {
     final groupsCollection = FirebaseFirestore.instance.collection("students");
-    groupsCollection.add(student.toMap());
+    if (widget.student['id'] != null) {
+      groupsCollection.doc(student['id']).update(student);
+    } else {
+      groupsCollection.add(student);
+    }
   }
 
   @override
   Widget build(BuildContext context) {
+    print(widget.student);
+    studentNameController.text = '${widget.student['name']}';
     return Scaffold(
       appBar: AppBar(
         title: const Text("Student"),
@@ -39,7 +42,7 @@ class _EditStudentState extends State<EditStudent> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               TextFormField(
-                controller: groupNameController,
+                controller: studentNameController,
                 textInputAction: TextInputAction.next,
                 decoration: const InputDecoration(
                   labelText: 'Student Name',
@@ -49,8 +52,10 @@ class _EditStudentState extends State<EditStudent> {
               const SizedBox(height: 30),
               ElevatedButton(
                 onPressed: () {
-                  final student = Student(groupNameController.text.trim(), 0);
-                  updateStudent(student);
+                  updateStudent({
+                    'name': studentNameController.text.trim(),
+                    'score': 0,
+                  });
                   Navigator.of(context).pop();
                 },
                 child: const Text("Done"),
