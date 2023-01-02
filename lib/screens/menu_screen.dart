@@ -1,14 +1,14 @@
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 
-class GradesScreen extends StatefulWidget {
-  const GradesScreen({super.key});
+class MenuScreen extends StatefulWidget {
+  const MenuScreen({super.key});
 
   @override
-  State<GradesScreen> createState() => _GradesScreenState();
+  State<MenuScreen> createState() => _MenuScreenState();
 }
 
-class _GradesScreenState extends State<GradesScreen> {
+class _MenuScreenState extends State<MenuScreen> {
   @override
   Widget build(BuildContext context) {
     return Container();

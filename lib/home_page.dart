@@ -1,8 +1,8 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:taqeem/screens/grades_screen.dart';
+import 'package:taqeem/screens/grades_rubrics_screen/grades_screen.dart';
 
 import 'screens/groups_scrreen/groups_screen.dart';
+import 'screens/menu_screen.dart';
 import 'screens/student_screen/students_screen.dart';
 
 class HomePage extends StatefulWidget {
@@ -17,26 +17,13 @@ class _HomePageState extends State<HomePage> {
   List<Widget> screenBody = const [
     GroupsScreen(),
     StudentsScreen(),
-    GradesScreen()
+    GradesScreen(),
+    MenuScreen(),
   ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Home"),
-      ),
-      drawer: Drawer(
-        child: Column(
-          children: [
-            Text(FirebaseAuth.instance.currentUser.toString()),
-            ElevatedButton(
-              child: const Text("LogOut"),
-              onPressed: () => FirebaseAuth.instance.signOut(),
-            )
-          ],
-        ),
-      ),
       body: screenBody[_currentIndex],
       bottomNavigationBar: NavigationBar(
         selectedIndex: _currentIndex,
@@ -57,6 +44,10 @@ class _HomePageState extends State<HomePage> {
           NavigationDestination(
             label: "Rubrics",
             icon: Icon(Icons.grading),
+          ),
+          NavigationDestination(
+            label: "Menu",
+            icon: Icon(Icons.more_horiz),
           ),
         ],
       ),

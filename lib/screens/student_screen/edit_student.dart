@@ -29,8 +29,9 @@ class _EditStudentState extends State<EditStudent> {
 
   @override
   Widget build(BuildContext context) {
-    print(widget.student);
-    studentNameController.text = '${widget.student['name']}';
+    final Map<String, dynamic> student = widget.student;
+    studentNameController.text = student['name'];
+
     return Scaffold(
       appBar: AppBar(
         title: const Text("Student"),
@@ -45,17 +46,16 @@ class _EditStudentState extends State<EditStudent> {
                 controller: studentNameController,
                 textInputAction: TextInputAction.next,
                 decoration: const InputDecoration(
-                  labelText: 'Student Name',
+                  labelText: "Student Name",
                   border: OutlineInputBorder(),
                 ),
               ),
               const SizedBox(height: 30),
               ElevatedButton(
                 onPressed: () {
-                  updateStudent({
-                    'name': studentNameController.text.trim(),
-                    'score': 0,
-                  });
+                  student['name'] = studentNameController.text.trim();
+                  student['score'] = widget.student['score'];
+                  updateStudent(student);
                   Navigator.of(context).pop();
                 },
                 child: const Text("Done"),
