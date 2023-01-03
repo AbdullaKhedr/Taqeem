@@ -24,36 +24,34 @@ class _EditGroupState extends State<EditGroup> {
       appBar: AppBar(
         title: const Text("Group"),
       ),
-      body: Center(
-        child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 20),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              TextFormField(
-                controller: groupNameController,
-                textInputAction: TextInputAction.next,
-                decoration: const InputDecoration(
-                  labelText: 'Group Name',
-                  border: OutlineInputBorder(),
-                ),
+      body: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            TextFormField(
+              controller: groupNameController,
+              textInputAction: TextInputAction.next,
+              decoration: const InputDecoration(
+                labelText: 'Group Name',
+                border: OutlineInputBorder(),
               ),
-              const SizedBox(height: 30),
-              ElevatedButton(
-                onPressed: () {
-                  var uid = FirebaseAuth.instance.currentUser!.uid;
-                  FirebaseFirestore.instance.collection("groups").add({
-                    'name': groupNameController.text.trim(),
-                    'score': 0,
-                    'students': [],
-                    'admins': [uid]
-                  });
-                  Navigator.of(context).pop();
-                },
-                child: const Text("Create Group"),
-              ),
-            ],
-          ),
+            ),
+            const SizedBox(height: 30),
+            ElevatedButton(
+              onPressed: () {
+                var uid = FirebaseAuth.instance.currentUser!.uid;
+                FirebaseFirestore.instance.collection("groups").add({
+                  'name': groupNameController.text.trim(),
+                  'score': 0,
+                  'students': [],
+                  'admins': [uid]
+                });
+                Navigator.of(context).pop();
+              },
+              child: const Text("Create Group"),
+            ),
+          ],
         ),
       ),
     );

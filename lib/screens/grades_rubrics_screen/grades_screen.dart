@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
@@ -12,6 +13,17 @@ class GradesScreen extends StatefulWidget {
 }
 
 class _GradesScreenState extends State<GradesScreen> {
+  final Stream<QuerySnapshot> _individualRubricsStream = FirebaseFirestore
+      .instance
+      .collection('rubrics')
+      .where('type', isEqualTo: "individual")
+      .snapshots();
+
+  final Stream<QuerySnapshot> _groupRubricsStream = FirebaseFirestore.instance
+      .collection('rubrics')
+      .where('type', isEqualTo: "group")
+      .snapshots();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -24,43 +36,126 @@ class _GradesScreenState extends State<GradesScreen> {
           Navigator.of(context).push(
             MaterialPageRoute(
               builder: (BuildContext context) {
-                return const EditRubric();
+                return const EditRubric(
+                  reubric: {},
+                );
               },
             ),
           );
         },
       ),
-      body: Column(
-        children: [
-          const Text(
-            "For Students",
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 20,
+      body: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          children: [
+            const Padding(
+              padding: EdgeInsets.all(8.0),
+              child: Text(
+                "Individually",
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 20,
+                ),
+              ),
             ),
-          ),
-          Expanded(
-            child: ListView(
-              children: const [
-                Text("data"),
-              ],
+            Expanded(
+              child: StreamBuilder<QuerySnapshot>(
+                stream: _individualRubricsStream,
+                builder: (BuildContext context,
+                    AsyncSnapshot<QuerySnapshot> snapshot) {
+                  if (snapshot.hasError) {
+                    return const Text('Something went wrong');
+                  }
+
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return Center(
+                        child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: const [CircularProgressIndicator()],
+                    ));
+                  }
+
+                  return ListView(
+                    children: snapshot.data!.docs
+                        .map((DocumentSnapshot document) {
+                          Map<String, dynamic> data =
+                              document.data()! as Map<String, dynamic>;
+                          data['id'] = document.id;
+                          return Card(
+                              child: ListTile(
+                            leading: const Icon(
+                              Icons.credit_score,
+                              size: 40.0,
+                              color: Colors.indigo,
+                            ),
+                            trailing: IconButton(
+                                onPressed: () {}, icon: const Icon(Icons.edit)),
+                            title: Text(data['name']),
+                            subtitle:
+                                Text('Weight: ${data['weight'].toString()}'),
+                          ));
+                        })
+                        .toList()
+                        .cast(),
+                  );
+                },
+              ),
             ),
-          ),
-          const Text(
-            "For Groups",
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 20,
+            const Padding(
+              padding: EdgeInsets.all(8.0),
+              child: Text(
+                "Groups",
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 20,
+                ),
+              ),
             ),
-          ),
-          Expanded(
-            child: ListView(
-              children: const [
-                Text("data"),
-              ],
+            Expanded(
+              child: StreamBuilder<QuerySnapshot>(
+                stream: _groupRubricsStream,
+                builder: (BuildContext context,
+                    AsyncSnapshot<QuerySnapshot> snapshot) {
+                  if (snapshot.hasError) {
+                    return const Text('Something went wrong');
+                  }
+
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return Center(
+                        child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: const [CircularProgressIndicator()],
+                    ));
+                  }
+
+                  return ListView(
+                    children: snapshot.data!.docs
+                        .map((DocumentSnapshot document) {
+                          Map<String, dynamic> data =
+                              document.data()! as Map<String, dynamic>;
+                          data['id'] = document.id;
+                          return Card(
+                              child: ListTile(
+                            leading: const Icon(
+                              Icons.credit_score,
+                              size: 40.0,
+                              color: Colors.indigo,
+                            ),
+                            trailing: IconButton(
+                                onPressed: () {}, icon: const Icon(Icons.edit)),
+                            title: Text(data['name']),
+                            subtitle:
+                                Text('Weight: ${data['weight'].toString()}'),
+                          ));
+                        })
+                        .toList()
+                        .cast(),
+                  );
+                },
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
