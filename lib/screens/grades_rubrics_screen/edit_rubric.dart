@@ -1,11 +1,20 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class EditRubric extends StatefulWidget {
   const EditRubric({super.key, required this.reubric});
   final Map<String, dynamic> reubric;
   @override
   State<EditRubric> createState() => _EditRubricState();
+}
+
+enum RubricsTypes {
+  individual('individual'),
+  group('group');
+
+  final String name;
+  const RubricsTypes(this.name);
 }
 
 class _EditRubricState extends State<EditRubric> {
@@ -19,15 +28,21 @@ class _EditRubricState extends State<EditRubric> {
     super.dispose();
   }
 
-  final dropDownOptions = ["Individual", "Group"];
-  String _dropdownValue = "Individual";
+  final dropDownOptions = [RubricsTypes.individual, RubricsTypes.group];
+  String _dropdownValue = RubricsTypes.individual.name;
 
   Future updateRubric(Map<String, dynamic> reubric) async {
-    final ruprecsCollection = FirebaseFirestore.instance.collection("rubrics");
-    if (widget.reubric['id'] != null) {
-      ruprecsCollection.doc(reubric['id']).update(reubric);
-    } else {
-      ruprecsCollection.add(reubric);
+    print(reubric);
+    if (reubric['type'] == RubricsTypes.individual.name) {
+      FirebaseFirestore.instance
+          .collection("individual-grading-rubrics")
+          .doc(reubric['name'])
+          .set(reubric);
+    } else if (reubric['type'] == RubricsTypes.group.name) {
+      FirebaseFirestore.instance
+          .collection("group-grading-rubrics")
+          .doc(reubric['name'])
+          .set(reubric);
     }
   }
 
@@ -52,17 +67,23 @@ class _EditRubricState extends State<EditRubric> {
             ),
             const SizedBox(height: 20),
             TextField(
+              keyboardType: TextInputType.number,
+              inputFormatters: [FilteringTextInputFormatter.digitsOnly],
               controller: rubricWeightController,
               textInputAction: TextInputAction.next,
               decoration: const InputDecoration(
-                labelText: 'Rubric Weight',
+                labelText: 'Rubric Weight (out of 100)',
                 border: OutlineInputBorder(),
               ),
             ),
             const SizedBox(height: 20),
-            const Text("Rubric Type"),
-            const SizedBox(height: 10),
             DropdownButtonFormField(
+              isExpanded: true,
+              hint: const Text("Rubric Type"),
+              decoration: InputDecoration(
+                  label: const Text("Type"),
+                  border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(5))),
               value: _dropdownValue,
               onChanged: (value) {
                 setState(() {
@@ -70,22 +91,22 @@ class _EditRubricState extends State<EditRubric> {
                 });
               },
               items: dropDownOptions.map(
-                (String value) {
+                (RubricsTypes value) {
                   return DropdownMenuItem<String>(
-                    value: value,
-                    child: Text(value),
+                    value: value.name,
+                    child: Text(value.name),
                   );
                 },
               ).toList(),
-              isExpanded: true,
             ),
             const SizedBox(height: 20),
             ElevatedButton(
+              style: ElevatedButton.styleFrom(),
               onPressed: () {
                 updateRubric({
                   'name': rubricNameController.text.trim(),
                   'weight': rubricWeightController.text.trim(),
-                  'type': _dropdownValue.toString()
+                  'type': _dropdownValue
                 });
                 Navigator.of(context).pop();
               },

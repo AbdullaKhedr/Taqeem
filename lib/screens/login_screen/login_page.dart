@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:taqeem/components/button.dart';
 
 import '../../components/alert_dialog.dart';
 
@@ -37,60 +38,61 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black26,
       body: Center(
-        child: Container(
-          padding: const EdgeInsets.only(left: 20.0, right: 20.0),
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(8),
-          ),
-          constraints: const BoxConstraints(maxWidth: 300),
-          child: ListView(
-            shrinkWrap: true,
+        child: Padding(
+          padding: const EdgeInsets.all(50.0),
+          child: Column(
             children: [
-              const Image(
-                image: AssetImage('assets/images/logo.png'),
-              ),
-              const SizedBox(height: 30.0),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: TextField(
-                  controller: emailController,
-                  textInputAction: TextInputAction.next,
-                  keyboardType: TextInputType.emailAddress,
-                  decoration: const InputDecoration(
-                    labelText: 'Email',
-                    border: OutlineInputBorder(),
-                  ),
+              const Expanded(
+                  flex: 3,
+                  child: Image(
+                    height: 200,
+                    image: AssetImage('assets/images/logo.png'),
+                  )),
+              Expanded(
+                flex: 4,
+                child: ListView(
+                  children: [
+                    TextField(
+                      controller: emailController,
+                      textInputAction: TextInputAction.next,
+                      keyboardType: TextInputType.emailAddress,
+                      decoration: const InputDecoration(
+                        labelText: 'Email',
+                        border: OutlineInputBorder(),
+                      ),
+                    ),
+                    const SizedBox(height: 20.0),
+                    TextField(
+                      controller: passwordController,
+                      textInputAction: TextInputAction.done,
+                      obscureText: true,
+                      decoration: const InputDecoration(
+                        labelText: 'Password',
+                        border: OutlineInputBorder(),
+                      ),
+                    ),
+                    const SizedBox(height: 40.0),
+                    Button(
+                      onClick: () {
+                        signIn();
+                      },
+                      text: "Login",
+                    ),
+                    const SizedBox(height: 20.0),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Text("Don't have an account? "),
+                        TextButton(
+                          child: const Text("Sign Up"),
+                          onPressed: () {},
+                        )
+                      ],
+                    )
+                  ],
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: TextField(
-                  controller: passwordController,
-                  textInputAction: TextInputAction.done,
-                  obscureText: true,
-                  decoration: const InputDecoration(
-                    labelText: 'Password',
-                    border: OutlineInputBorder(),
-                  ),
-                ),
-              ),
-              const SizedBox(height: 20.0),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    minimumSize: const Size.fromHeight(40),
-                  ),
-                  onPressed: () {
-                    signIn();
-                  },
-                  child: const Text("Login"),
-                ),
-              ),
-              const SizedBox(height: 20.0),
             ],
           ),
         ),

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 
-import 'create_rubric.dart';
+import 'edit_rubric.dart';
 
 class GradesScreen extends StatefulWidget {
   const GradesScreen({super.key});
@@ -15,13 +15,11 @@ class GradesScreen extends StatefulWidget {
 class _GradesScreenState extends State<GradesScreen> {
   final Stream<QuerySnapshot> _individualRubricsStream = FirebaseFirestore
       .instance
-      .collection('rubrics')
-      .where('type', isEqualTo: "individual")
+      .collection('individual-grading-rubrics')
       .snapshots();
 
   final Stream<QuerySnapshot> _groupRubricsStream = FirebaseFirestore.instance
-      .collection('rubrics')
-      .where('type', isEqualTo: "group")
+      .collection('group-grading-rubrics')
       .snapshots();
 
   @override
@@ -89,7 +87,13 @@ class _GradesScreenState extends State<GradesScreen> {
                               color: Colors.indigo,
                             ),
                             trailing: IconButton(
-                                onPressed: () {}, icon: const Icon(Icons.edit)),
+                                onPressed: () {
+                                  FirebaseFirestore.instance
+                                      .collection('individual-grading-rubrics')
+                                      .doc(data['name'])
+                                      .delete();
+                                },
+                                icon: const Icon(Icons.delete)),
                             title: Text(data['name']),
                             subtitle:
                                 Text('Weight: ${data['weight'].toString()}'),
@@ -142,7 +146,13 @@ class _GradesScreenState extends State<GradesScreen> {
                               color: Colors.indigo,
                             ),
                             trailing: IconButton(
-                                onPressed: () {}, icon: const Icon(Icons.edit)),
+                                onPressed: () {
+                                  FirebaseFirestore.instance
+                                      .collection('group-grading-rubrics')
+                                      .doc(data['name'])
+                                      .delete();
+                                },
+                                icon: const Icon(Icons.delete)),
                             title: Text(data['name']),
                             subtitle:
                                 Text('Weight: ${data['weight'].toString()}'),
